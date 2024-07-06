@@ -1,5 +1,4 @@
 /** @type {import('tailwindcss').Config} */
-import Dotenv from 'dotenv-webpack';
 export default {
   content: [
     "./index.html",
@@ -8,9 +7,7 @@ export default {
   theme: {
     extend: {},
   },
-  plugins: [
-    new Dotenv()
-  ],
+  plugins: [],
   server: {
     port: 5000
   },
