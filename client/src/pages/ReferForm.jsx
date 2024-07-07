@@ -17,7 +17,7 @@ function ReferForm({ onClose }) {
     };
 
     const handleSubmit = () => {
-        axios.post('/api/rf/refer', formData)
+        axios.post('/api/rf/refer', formData, { withCredentials: true })
             .then(() => {
                 toast.success("Referance Email sended successfuly", { position: 'top-center' });
                 setFormData({ name: '', email: '', number: '' });
@@ -36,9 +36,9 @@ function ReferForm({ onClose }) {
     };
 
     useEffect(() => {
-        axios.get('/api/rf/referralcode')
+        axios.get('/api/rf/referralcode', { withCredentials: true })
             .then(response => setMyReferralCode(response.data))
-            .catch(() => setMyReferralCode('null'))
+            .catch(() => setMyReferralCode('null'));
     }, []);
 
     useEffect(() => {
