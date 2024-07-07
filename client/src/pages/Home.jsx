@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Navbar from '../Components/Navbar'
 import ReferForm from './ReferForm'
 import image from '../assets/image.svg'
@@ -10,34 +10,52 @@ import contactUs from '../assets/contact-us.png'
 import { ChevronRight } from 'lucide-react';
 import Footer from '../Components/Footer'
 import CustomTable from '../Components/Table'
+import money1 from '../assets/money1.svg'
+import money2 from '../assets/money2.svg'
+import money3 from '../assets/money3.svg'
+
 
 function Home() {
+
+    const navigate = useNavigate();
+
+    let isAuthenticated = window.localStorage.getItem("isAuthenticated");
+
     const [tab, setTab] = useState('refer');
     const [open, setOpen] = useState(false);
 
-    const handleOpen = () => setOpen(true);
+    const handleOpen = () => {
+        if (isAuthenticated) setOpen(true);
+        else return navigate('/auth');
+
+    }
+
     const handleClose = () => setOpen(false);
 
     return (<>
-        <header className='fixed bg-white w-screen z-10'>
+        <header className='fixed bg-white w-screen z-[51]'>
             <Navbar />
             <hr />
         </header>
 
         {open && <ReferForm onClose={handleClose} />}
 
-        <main className='h-full w-screen'>
-            <nav className='py-14 pt-32'>
-                <ul className="py-4 px-10 text-slate-700 rounded-[36px] flex w-fit mx-auto justify-center items-center bg-[var(--bg-color)] gap-10 font-bold text-lg">
-                    <li className={tab === 'refer' ? 'text-[--base-color] cursor-pointer' : 'cursor-pointer'} onClick={() => setTab('refer')}>Refer</li>
-                    <li className={tab === 'benefit' ? 'text-[--base-color] cursor-pointer' : 'cursor-pointer'} onClick={() => setTab('benefit')}>Benefit</li>
-                    <li className={tab === 'faqs' ? 'text-[--base-color] cursor-pointer' : 'cursor-pointer'} onClick={() => setTab('faqs')}>FAQs</li>
-                    <li className={tab === 'support' ? 'text-[--base-color] cursor-pointer' : 'cursor-pointer'} onClick={() => setTab('support')}>Support</li>
+        <main className='h-full max-w-screen'>
+            <nav className='py-10 pt-32'>
+                <ul className="py-4 px-10 text-slate-700 rounded-[36px] flex w-fit mx-auto justify-center bg-[var(--bg-color)] gap-10 font-bold text-lg">
+                    <li className={tab === 'refer' ? 'text-[--base-color] cursor-pointer' : 'cursor-pointer'} onClick={() => setTab('refer')}>
+                        Refer {tab === 'refer' ? <hr className='border-[--base-color] border-[3px] rounded-lg w-2 mx-auto' /> : null}</li>
+                    <li className={tab === 'benefit' ? 'text-[--base-color] cursor-pointer' : 'cursor-pointer'} onClick={() => setTab('benefit')}>
+                        Benefit {tab === 'benefit' ? <hr className='border-[--base-color] border-[3px] rounded-lg w-2 mx-auto' /> : null}</li>
+                    <li className={tab === 'faqs' ? 'text-[--base-color] cursor-pointer' : 'cursor-pointer'} onClick={() => setTab('faqs')}>
+                        FAQs {tab === 'faqs' ? <hr className='border-[--base-color] border-[3px] rounded-lg w-2 mx-auto' /> : null}</li>
+                    <li className={tab === 'support' ? 'text-[--base-color] cursor-pointer' : 'cursor-pointer'} onClick={() => setTab('support')}>
+                        Support {tab === 'support' ? <hr className='border-[--base-color] border-[3px] rounded-lg w-2 mx-auto' /> : null}</li>
                 </ul>
             </nav>
 
-            <section className="w-full sm:pb-20 lg:px-14 xl:px-32">
-                <div className="w-full px-4 md:px-6 lg:px-16 xl:py-18 shadow-xl bg-[var(--bg-color)] rounded-2xl relative">
+            <section className="w-full sm:pb-20 lg:px-14 xl:px-32 mb-10 sm:mb-0">
+                <div className="w-full max-w-[27rem] mx-auto sm:max-w-[35rem] md:max-w-[45rem] lg:max-w-[75rem] px-4 md:px-6 lg:px-16 py-14 xl:py-18 shadow-2xl bg-[var(--bg-color)] rounded-2xl">
                     <div className='grid grid-cols-1 lg:grid-cols-2 items-center gap-6'>
                         <div className='space-y-8 md:space-y-12'>
                             <div className='space-y-6 md:space-y-12 text-center lg:text-left'>
@@ -60,7 +78,7 @@ function Home() {
                         <div>
                             <img
                                 alt="main"
-                                className="mx-auto overflow-hidden rounded-sm rounded-bl-3xl rounded-tr-3xl object-bottom w-full max-w-[50rem] lg:max-w-[37rem] lg:order-last bg-inherit"
+                                className="mx-auto overflow-hidden rounded-sm rounded-bl-3xl rounded-tr-3xl object-bottom w-full max-w-[40rem] lg:max-w-[37rem] lg:order-last bg-inherit"
                                 src={image}
                             />
                         </div>
@@ -156,7 +174,6 @@ function Home() {
                     <button
                         onClick={handleOpen}
                         className="flex h-12 items-center justify-center rounded-md bg-[var(--base-color)] hover:bg-[var(--hover-color)] px-8 text-lg font-bold text-slate-100"
-                        to={"#"}
                     >
                         Refer Now
                     </button>
@@ -206,24 +223,32 @@ function Home() {
             </section>
 
             <section className='p-8 px-14 mb-20'>
-                <div className='bg-[var(--base-color)] flex flex-col  md:flex-row gap-6 justify-between items-center w-full border px-14 md:h-60 rounded-xl py-10 md:py-0'>
+                <div className='bg-[var(--base-color)] flex flex-col md:flex-row gap-6 justify-between items-center w-full border px-14 md:h-60 rounded-xl py-10 md:py-0'>
                     <div className='flex flex-col sm:flex-row items-center gap-6 bg-inherit h-full'>
                         <div className='p-1 rounded-lg bg-blue-400'>
                             <img src={contactUs} alt="contact us" className='bg-slate-100 h-auto max-w-20 p-2 rounded-xl' />
                         </div>
                         <div className='space-y-2 bg-inherit text-center sm:text-left'>
-                            <h1 className='bg-inherit  text-2xl lg:text-3xl font-bold text-slate-100'> Want to delve deeper into the program? </h1>
-                            <p className='bg-inherit  text-lg font-bold text-slate-100'>Share your details to receive expert insights from our program team!</p>
+                            <h1 className='relative z-50 bg-transparent text-2xl lg:text-3xl font-bold text-slate-100'> Want to delve deeper into the program? </h1>
+                            <p className='relative z-30 bg-transparent text-lg font-bold text-slate-100'>Share your details to receive expert insights from our program team!</p>
                         </div>
                     </div>
-                    <div className="bg-inherit min-w-fit">
-                        <Link
-                            className="bg-slate-100 flex gap-1 h-12 items-center justify-center rounded-lg px-8 text-lg font-bold text-[var(--base-color)] hover:text-[var(--hover-color)]"
-                            to={"#"}
-                        >
-                            Get in touch
-                            <ChevronRight className='h-auto w-5 bg-inherit' />
-                        </Link>
+                    <div className="relative bg-inherit min-w-fit">
+                        <div className='relative z-50'>
+                            <button
+                                className="z-50 bg-slate-100 flex gap-1 h-12 items-center justify-center rounded-lg px-8 text-lg font-bold text-[var(--base-color)] hover:text-[var(--hover-color)]"
+                                to={"#"}
+                            >
+                                Get in touch
+                                <ChevronRight className='h-auto w-5 bg-inherit' />
+                            </button>
+                        </div>
+
+                        <div className='invisible md:visible relative z-10'>
+                            <div className="h-[13rem] w-[25rem] bg-[#237CF2] rounded-tl-full rounded-tr-full absolute right-5 -bottom-[95px]"></div>
+                            <div className="h-[9.5rem] w-[18.5rem] bg-[#3289FC] rounded-tl-full rounded-tr-full absolute right-[4.5rem] -bottom-[95px]"></div>
+                            <div className="h-[6rem] w-[11rem] bg-[#4696FF] rounded-tl-full rounded-tr-full absolute right-[8.5rem] -bottom-[95px]"></div>
+                        </div>
                     </div>
                 </div>
             </section>

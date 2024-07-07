@@ -5,8 +5,8 @@ import axios from 'axios'
 import App from './App.jsx'
 import './index.css'
 
-
 // axios.defaults.baseURL = process.env.SERVER_URL;
+axios.defaults.baseURL = 'http://localhost:8000';
 axios.defaults.withCredentials = true;
 axios.interceptors.response.use(
   response => {

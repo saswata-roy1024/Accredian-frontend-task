@@ -15,12 +15,12 @@ function Footer() {
                 <img src={footerLogo} alt="logo" className='bg-inherit h-11' />
                 <div className='bg-inherit flex flex-col'>
                     <Link
-                        className="flex h-10 items-center justify-center rounded-md bg-[var(--base-color)] hover:bg-[var(--hover-color)] px-8 text-base font-bold border-2"
+                        className="flex h-10 items-center justify-center rounded-md bg-[var(--base-color)] hover:bg-[var(--hover-color)] sm:px-8 text-sm sm:text-base font-bold border-2"
                         to={"#"}
                     >
                         Schedule 1-on-1 call Now
                     </Link>
-                    <h3 className='bg-inherit text-sm text-center'>Speak with our Learning Advisor</h3>
+                    <h3 className='bg-inherit text-xs sm:text-sm text-center'>Speak with our Learning Advisor</h3>
                 </div>
 
 

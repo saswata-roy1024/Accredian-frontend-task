@@ -51,22 +51,29 @@ function Signup() {
 
     const handleSignup = async (event) => {
         event.preventDefault();
-        if(signupFields.name== "" || signupFields.email == "" || signupFields.password == "" || signupFields.number == "") return toast.error("Empty required Fields!!", { position: 'top-center' });
-        else if(signupFields.password !== signupFields.repeat_password) return toast.error("Password and confirm password does not match!!", { position: 'top-center' });
-        axios.post('/api/auth/signup', signupFields)
-            .then(response => {
-                if (response.status === 200) {
-                    window.localStorage.setItem("isAuthenticated", true);
-                    navigate('/');
-                }
-            })
-            .catch(err => {
-                if (err.response.data.errors) {
-                    err.response.data.errors.forEach((error) => {
-                        toast.error(error.msg, { duration: 5000, position: 'bottom-right' });
-                    });
-                }
-            });
+
+        const { name, email, password, confirm_password, number, referral_code } = signupFields;
+
+        // Validation
+        if (name === "" || email === "" || password === "" || number === "") return toast.error("Empty required Fields!!", { position: 'top-center' });
+        else if (password !== confirm_password) return toast.error("Password and confirm password do not match!!", { position: 'top-center' });
+        else if (!/^\d+$/.test(number)) return toast.error("Invalid phone number!!", { position: 'top-center' });
+
+        try {
+            const response = await axios.post('/api/auth/signup', { name, email, password, number, referral_code });
+            if (response.status === 200) {
+                window.localStorage.setItem("isAuthenticated", true);
+                navigate('/');
+            }
+        } catch (err) {
+            if (err.response && err.response.data.errors) {
+                err.response.data.errors.forEach((error) => {
+                    toast.error(error.msg, { duration: 5000, position: 'bottom-right' });
+                });
+            } else {
+                toast.error("An unexpected error occurred", { position: 'bottom-right' });
+            }
+        }
     };
 
 
@@ -112,7 +119,7 @@ function Signup() {
                         <div className="space-y-4 w-full">
                             <input name="name" value={signupFields.name} onChange={handleSignupChange} placeholder="Enter your Name" required type="text" className="h-12 px-4 w-full rounded-lg shadow-sm text-base border" />
                             <hr />
-                                <input name="email" value={signupFields.email} onChange={handleSignupChange} placeholder="Enter your Email" type="email" className="h-12 px-4 w-full rounded-lg shadow-sm text-base border" />                           
+                            <input name="email" value={signupFields.email} onChange={handleSignupChange} placeholder="Enter your Email" type="email" className="h-12 px-4 w-full rounded-lg shadow-sm text-base border" />
                             <input name="number" value={signupFields.number} onChange={handleSignupChange} placeholder="Enter your Number" required type="text" className="h-12 px-4 w-full rounded-lg shadow-sm text-base border" />
                             <input name="password" value={signupFields.password} onChange={handleSignupChange} placeholder="Enter your Password" required type="password" className="h-12 px-4 w-full rounded-lg shadow-sm text-base border" />
                             <input name="confirm_password" value={signupFields.confirm_password} onChange={handleSignupChange} placeholder="Confirm Password" required type="password" className="h-12 px-4 w-full rounded-lg shadow-sm text-base border" />

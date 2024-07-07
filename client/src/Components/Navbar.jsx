@@ -1,9 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import accredian from '../assets/accredian.png'
-import { ChevronDown, AlignJustify } from 'lucide-react';
+import { ChevronDown, AlignJustify, User } from 'lucide-react';
 
 function Navbar() {
+    let isAuthenticated = window.localStorage.getItem("isAuthenticated");
     return (<>
         <div className="mx-4 py-10 lg:px-6 h-14 flex items-center justify-between">
             <div className='flex items-center gap-6'>
@@ -30,16 +31,24 @@ function Navbar() {
                     </Link>
                 </div>
 
-                <div className='flex gap-3 items-center text-base'>
-                    <Link className="text-sm font-bold bg-slate-200 px-4 py-2 rounded-md" to={'auth'}>
-                        Login
-                    </Link>
-                    <Link className="hidden lg:inline-block text-white text-sm bg-[var(--base-color)] hover:bg-[var(--hover-color)] px-4 py-2 rounded-md"
-                        to={"#"}>
-                        Try for free
-                    </Link>
-                    <AlignJustify className='lg:hidden h-auto w-9 hover:cursor-pointer'/>
-                </div>
+                {isAuthenticated ?
+                    <div className='flex gap-3 items-center text-base p-1 border-2 rounded-full border-[var(--base-color)]'>
+
+                        <User className='h-auto w-7 hover:cursor-pointer text-[var(--base-color)]' />
+                    </div>
+
+                    : <div className='flex gap-3 items-center text-base'>
+                        <Link className="text-sm font-bold bg-slate-200 px-4 py-2 rounded-md" to={'auth'}>
+                            Login
+                        </Link>
+                        <Link className="hidden lg:inline-block text-white text-sm bg-[var(--base-color)] hover:bg-[var(--hover-color)] px-4 py-2 rounded-md"
+                            to={"#"}>
+                            Try for free
+                        </Link>
+                        <AlignJustify className='lg:hidden h-auto w-9 hover:cursor-pointer' />
+                    </div>}
+
+
 
             </nav>
         </div>
